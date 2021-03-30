@@ -1,9 +1,10 @@
 import os
-import PySimpleGUI as sg
-layout = [ [sg.Text("")]
-
+n = 2
+while n!= 0:
+    print('Vibor')
+    n = int(input())
+    if n == 1:
         os.startfile('e:\\python files\proekt_lab\export.py')
-        
     
         
         
