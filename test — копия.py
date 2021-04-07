@@ -1,12 +1,10 @@
 import random
+import io
 import time
-from contextlib import redirect_stdout
 import numpy as np
 import os,sys
-from PIL import Image
-from matplotlib import pyplot as plt
-from tkinter import Tk, Canvas, Frame, BOTH
-f = open('export.txt','r')
+from PIL import Image, ImageGrab, ImageDraw
+from tkinter import Tk, Canvas, Frame, BOTH, Button
 class Figure(Frame):
 
         def __init__(self):
@@ -30,8 +28,7 @@ def main():
         ex = Figure()
         root.geometry("800x600+300+300")
         root.mainloop()
-if __name__ == '__main__':
-        main()
+
 def printMaze(maze):
 	for i in range(0, height):
 		for j in range(0, width):
@@ -56,12 +53,25 @@ def surroundingCells(rand_wall):
 		s_cells += 1
 
 	return s_cells
+def getter(widget):
+	x=root.winfo_rootx()+widget.winfo_x()
+	y=root.winfo_rooty()+widget.winfo_y()
+	x1=x+widget.winfo_width()
+	y1=y+widget.winfo_height()
+	ImageGrab.grab().crop((x,y,x1,y1)).save("e:/python files/proekt_lab/pic.png")
 
+def save_as_png(canvas,fileName):
+    canvas.postscript(file = fileName + '.eps') 
+    img = Image.open(fileName + '.eps') 
+    img.save(fileName + '.png', 'png') 
 
+root = Tk()
+c = Canvas(root, width = 800, height = 800, bg = 'white')
+c.pack()
 wall = '⬛'
 cell = '⬜'
 unvisited = 'u'
-height = 5
+height = 10
 width = 10
 maze = []
 
@@ -244,5 +254,26 @@ for i in range(width-1, 0, -1):
 #----------------------------------------------------------------------
 #50 пикселей на 1 единицу ширины или высоты, bmp file
 printMaze(maze)
+image1 = Image.new("RGB",(800,600))
+draw = ImageDraw.Draw(image1)
+print('pause')
+for i in range(0,height):
+	for j in range(0,width):
+		if maze[i][j] == '⬛':
+			c.create_rectangle(
+                                        50*j,50*i,50*(j+1),50*(i+1),
+                                        outline="#fb0", fill = "#000"
+                                )
+		else:
+			c.create_rectangle(
+                                        50*j,50*i,50*(j+1),50*(i+1),
+                                        outline="#fb0", fill = "#fff"
+                                )
+	print('\n')
+c.update()
+time.sleep(3)
+getter(c)
+root.mainloop()
+
 
 
