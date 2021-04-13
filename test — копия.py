@@ -1,34 +1,13 @@
 import random
 import io
+import subprocess
 import time
+from contextlib import redirect_stdout
 import numpy as np
 import os,sys
 from PIL import Image, ImageGrab, ImageDraw
 from tkinter import Tk, Canvas, Frame, BOTH, Button
-class Figure(Frame):
-
-        def __init__(self):
-                super().__init__()
-                self.initUI()
-        def initUI(self):
-                self.master.title("PROGA")
-                self.pack(fill = BOTH, expand = 1)
-
-                canvas = Canvas(self)
-                for i in range(1,3):
-                        for j in range(1,3):
-                                canvas.create_rectangle(
-                                        30*j,10*i,180*j,80*i,
-                                        outline="#fb0", fill = "#fb0"
-                                )
-                canvas.pack(fill = BOTH, expand = 1)
-
-def main():
-        root = Tk()
-        ex = Figure()
-        root.geometry("800x600+300+300")
-        root.mainloop()
-
+f = open('e:/python files/proekt_lab/export.txt','w')
 def printMaze(maze):
 	for i in range(0, height):
 		for j in range(0, width):
@@ -53,26 +32,12 @@ def surroundingCells(rand_wall):
 		s_cells += 1
 
 	return s_cells
-def getter(widget):
-	x=root.winfo_rootx()+widget.winfo_x()
-	y=root.winfo_rooty()+widget.winfo_y()
-	x1=x+widget.winfo_width()
-	y1=y+widget.winfo_height()
-	ImageGrab.grab().crop((x,y,x1,y1)).save("e:/python files/proekt_lab/pic.png")
-
-def save_as_png(canvas,fileName):
-    canvas.postscript(file = fileName + '.eps') 
-    img = Image.open(fileName + '.eps') 
-    img.save(fileName + '.png', 'png') 
-
-root = Tk()
-c = Canvas(root, width = 800, height = 800, bg = 'white')
-c.pack()
+width1,height1 = 800,800
 wall = '⬛'
 cell = '⬜'
 unvisited = 'u'
-height = 10
-width = 10
+height = 50
+width = 50
 maze = []
 
 
@@ -254,26 +219,21 @@ for i in range(width-1, 0, -1):
 #----------------------------------------------------------------------
 #50 пикселей на 1 единицу ширины или высоты, bmp file
 printMaze(maze)
-image1 = Image.new("RGB",(800,600))
+image1 = Image.new("RGB",(800,800))
 draw = ImageDraw.Draw(image1)
 print('pause')
 for i in range(0,height):
 	for j in range(0,width):
 		if maze[i][j] == '⬛':
-			c.create_rectangle(
-                                        50*j,50*i,50*(j+1),50*(i+1),
-                                        outline="#fb0", fill = "#000"
-                                )
+						draw.rectangle(((width1/width)*j,(height1/height)*i,(width1/width)*(j+1),(height1/height)*(i+1)),fill ='#000000' , outline = '#000000')
 		else:
-			c.create_rectangle(
-                                        50*j,50*i,50*(j+1),50*(i+1),
-                                        outline="#fb0", fill = "#fff"
-                                )
+						draw.rectangle(((width1/width)*j,(height1/height)*i,(width1/width)*(j+1),(height1/height)*(i+1)),fill ='#ffffff' , outline = '#ffffff')
 	print('\n')
-c.update()
-time.sleep(3)
-getter(c)
-root.mainloop()
-
-
-
+image1.save('e:/python files/proekt_lab/PILImage.png',"PNG")
+for i in range(0,height):
+	for j in range(0,width):
+		if maze[i][j] == '⬛':
+						f.write('1')
+		else:
+						f.write('0')
+	f.write('\n')
