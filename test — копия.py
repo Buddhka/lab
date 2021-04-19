@@ -7,7 +7,7 @@ import numpy as np
 import os,sys
 from PIL import Image, ImageGrab, ImageDraw
 from tkinter import Tk, Canvas, Frame, BOTH, Button
-f = open('e:/python files/proekt_lab/export.txt','w')
+f = open('export1.txt','w')
 def printMaze(maze):
 	for i in range(0, height):
 		for j in range(0, width):
@@ -226,14 +226,12 @@ for i in range(0,height):
 	for j in range(0,width):
 		if maze[i][j] == '⬛':
 						draw.rectangle(((width1/width)*j,(height1/height)*i,(width1/width)*(j+1),(height1/height)*(i+1)),fill ='#000000' , outline = '#000000')
-		else:
-						draw.rectangle(((width1/width)*j,(height1/height)*i,(width1/width)*(j+1),(height1/height)*(i+1)),fill ='#ffffff' , outline = '#ffffff')
-	print('\n')
-image1.save('e:/python files/proekt_lab/PILImage.png',"PNG")
-for i in range(0,height):
-	for j in range(0,width):
-		if maze[i][j] == '⬛':
 						f.write('1')
 		else:
+						draw.rectangle(((width1/width)*j,(height1/height)*i,(width1/width)*(j+1),(height1/height)*(i+1)),fill ='#ffffff' , outline = '#ffffff')
 						f.write('0')
+		
+	print('\n')
 	f.write('\n')
+image1.save('PILImage.png',"PNG")
+f.close()
